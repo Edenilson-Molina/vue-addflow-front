@@ -1,0 +1,53 @@
+@import './base.css';
+
+@layer tailwind-base, primevue, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-weight: normal;
+}
+
+@layer base {
+
+  @font-face {
+    font-family: "Parkinsans";
+    src: url("@/assets/fonts/OTF/Parkinsans-Ligth.ttf") format("opentype");
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: "Parkinsans";
+    src: url("@/assets/fonts/OTF/Parkinsans-Regular.ttf") format("opentype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: "Parkinsans";
+    src: url("@/assets/fonts/OTF/Parkinsans-Medium.ttf") format("opentype");
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+  }
+}
+
+* {
+  font-family: 'Parkinsans', sans-serif;
+}
+
+
+
