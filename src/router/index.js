@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import systemRoutes from './system-routes';
+import accountRoutes from './account-routes';
+import categoryRoutes from './category-routes';
+import transactionRoutes from './transaction-routes';
 import { useAuthStore } from '@/stores/auth.store';
 import { storeToRefs } from 'pinia';
 
@@ -18,7 +21,10 @@ const routes = [
     name:'layout',
     component: () => import('../views/layouts/DefaultLayout.vue'),
     children:[
-      ...systemRoutes
+      ...systemRoutes,
+      ...accountRoutes,
+      ...categoryRoutes,
+      ...transactionRoutes,
     ]
   },
   {
@@ -53,7 +59,7 @@ router.beforeEach(async(to, from, next) => {
   if(to.meta?.requiresAuth){
     // Check if token exists
     if(!token.value){
-      next({ name: 'login' });
+      next({ name: 'login', replace: true });
       return;
     } else {
       // Check if user is authorized

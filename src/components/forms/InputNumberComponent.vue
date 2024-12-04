@@ -1,6 +1,6 @@
 <template>
-    <article class="flex flex-col mb-2">
-        <InputText class="w-full" :type="type" v-model="model" :placeholder="placeholder" />
+    <article class="flex flex-col mb-2 w-full">
+        <InputNumber class="w-full" v-model="model" :placeholder="placeholder" inputId="currency-us" mode="currency" currency="USD" locale="en-US" fluid/>
         <Message v-if="errors" severity="error" size="small" variant="simple">
             <small v-for="error in errors" class="font-normal">
                 {{ error.$message }}
@@ -21,10 +21,6 @@ const { placeholder, errors, type } = defineProps({
     errors: {
         type: Array,
         default: []
-    },
-    type: {
-        type: String,
-        default: 'text'
     }
 });
 </script>

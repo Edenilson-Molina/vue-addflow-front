@@ -1,10 +1,10 @@
 <template>
-    <section class="flex justify-center items-center w-full">
+    <section class="flex flex-1 justify-center items-center w-full">
         <Fieldset class="w-full md:w-1/2 lg:w-1/4">
             <template #legend>
                 <header class="flex justify-center items-center gap-1">
                     <img class="w-20" src="/src/assets/logo.svg" alt="">
-                    <h1 class="text-xl font-bold">Flujo de Caja</h1>
+                    <h1 class="text-lg">Flujo de Caja</h1>
                 </header>
             </template>
             <form @submit.prevent="handleLogin" class="flex flex-col justify-center">

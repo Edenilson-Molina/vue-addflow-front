@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useAuthStore } from '@/stores/auth.store'
 import { useToastStore } from '@/stores/index.store'
+import { storeToRefs } from "pinia"
 
 let config = {
     baseURL: import.meta.env.VITE_VUE_APP_API_URL + '/api',
@@ -16,10 +17,10 @@ const instance = axios.create(config)
 instance.interceptors.request.use(
     (config) => {
         const authStore = useAuthStore()
-        const { token } = authStore
+        const { token } = storeToRefs(authStore)
 
         if (token && config.headers !== null) {
-            config.headers.Authorization = `Bearer ${token}`
+            config.headers.Authorization = `Bearer ${token.value}`
         }
         return config
     },
@@ -40,6 +41,14 @@ instance.interceptors.response.use(
             message: error.response.data.message,
             type: 'error',
         })
+
+        if (error.response.status === 401) {
+            const authStore = useAuthStore();
+            const {token, user, authenticated} = storeToRefs(authStore);
+            token.value = null;
+            user.value = null;
+            authenticated.value = false;
+        }
     }
 )
 
