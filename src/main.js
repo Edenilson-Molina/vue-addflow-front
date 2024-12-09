@@ -42,6 +42,7 @@ import Toolbar from 'primevue/toolbar';
 import SelectButton from 'primevue/selectbutton';
 import Textarea from 'primevue/textarea';
 import ToggleButton from 'primevue/togglebutton';
+import ToggleSwitch from 'primevue/toggleswitch';
 
 
 const app = createApp(App);
@@ -80,8 +81,9 @@ app.component('Toolbar', Toolbar);
 app.component('SelectButton', SelectButton);
 app.component('Textarea', Textarea);
 app.component('ToggleButton', ToggleButton);
+app.component('ToggleSwitch', ToggleSwitch);
 
-// Installation plugin 
+// Installation plugin
 app.use(pinia);
 app.use(router);
 app.use(ToastService);

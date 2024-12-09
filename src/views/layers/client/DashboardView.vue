@@ -1,5 +1,4 @@
 <template>
-    <!-- Main y Footer -->
     <section class="container mx-auto">
         <header>
             <h1 class="text-3xl font-bold">Dashboard</h1>
@@ -10,7 +9,8 @@
                 <Card style="width: 25rem; overflow: hidden">
                     <template #title>
                         <div :class="'flex gap-2 items-center'">
-                            <i class="pi pi-list"></i><h2>Transacciones diarias</h2>
+                            <i class="pi pi-list"></i>
+                            <h2>Transacciones diarias</h2>
                         </div>
                     </template>
                     <template #subtitle>Registro operativo</template>

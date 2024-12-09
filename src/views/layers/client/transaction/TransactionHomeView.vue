@@ -7,7 +7,7 @@
         <section class="flex flex-col gap-1 mt-2">
             <Toolbar class="mb-6">
                 <template #start>
-                    <Button label="Nuevo" icon="pi pi-plus" class="mr-2" @click="visible = true" />
+                    <Button label="Nuevo" icon="pi pi-plus" class="mr-2" @click="toggleNewTransaction" />
                 </template>
                 <template #center>
                     <div class="flex justify-start">
@@ -34,8 +34,8 @@
                 </template>
                 <template #list="slotProps">
                     <div class="flex flex-col">
-                        <div v-for="(item, index) in slotProps.items" :key="index">
-                            <div class="flex flex-col sm:flex-row sm:items-center p-2 gap-4"
+                        <div v-for="(item, index) in slotProps.items" :key="index" >
+                            <div @click="showTransaction(item)" class="flex flex-col sm:flex-row sm:items-center p-2 gap-4 hover:bg-slate-100 dark:hover:bg-surface-800 cursor-pointer"
                                 :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }">
                                 <div class="flex flex-col items-center md:w-40">
                                     <div class="rounded-border" style="left: 4px; top: 4px">
@@ -46,15 +46,15 @@
                                 <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
                                     <div class="flex flex-row md:flex-col justify-between items-start gap-2">
                                         <div>
-                                            <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{
-                                                item.categoria.nombre }}</span>
+                                            <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{ item.categoria.nombre }}</span>
                                             <div class="text-lg font-medium mt-2">{{ item.descripcion }}</div>
                                         </div>
                                     </div>
                                     <div class="flex flex-col md:items-end gap-1">
                                         <span class="text-xl font-semibold"
-                                            :class="{'text-red-500': !item.categoria.es_entrada}">${{ item.monto
-                                            }}</span>
+                                            :class="{ 'text-red-500': !item.categoria.es_entrada }">
+                                            ${{ item.monto }}
+                                        </span>
                                         <div class="flex gap-2 items-center">
                                             <Chip :label="item.remitido_a" />
                                             <div>
@@ -78,54 +78,66 @@
             </DataView>
             <Dialog v-model:visible="visible" modal :style="{ width: '30rem' }">
                 <template #header>
-                    <div class="inline-flex items-center justify-between gap-2 w-full">
+                    <div class="inline-flex items-center justify-between gap-2 w-full mr-2">
                         <div class="flex items-center gap-2">
                             <i class="pi pi-wallet"></i>
                             <span class="font-bold whitespace-nowrap">Registrar operación</span>
                         </div>
                         <div class="flex flex-col items-center">
-                            <ToggleButton v-model="form.estado" class="w-40" onLabel="Aprobada" offLabel="Pendiente" onIcon="pi pi-check" offIcon="pi pi-times" />
+                            <ToggleButton v-model="form.estado" class="w-32 text-sm" onLabel="Aprobada"
+                                offLabel="Pendiente" onIcon="pi pi-check" offIcon="pi pi-times" />
                         </div>
                     </div>
                 </template>
-                <span class="text-surface-500 dark:text-surface-400 block mb-4">Información general</span>
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-surface-500 dark:text-surface-400">Información general</span>
+                    <div class="flex items-center gap-1">
+                        <span class="text-surface-500 dark:text-surface-400">{{ form.es_entrada ? 'Ingreso' :
+                            'Egreso'}}</span>
+                        <ToggleSwitch v-model="form.es_entrada">
+                            <template #handle="{ checked }">
+                                <i :class="['!text-xs pi', { 'pi-check': checked }]" />
+                            </template>
+                        </ToggleSwitch>
+                    </div>
+                </div>
                 <div class="flex items-center gap-2 mb-4">
                     <label for="username" class="font-semibold w-24">Remitido a</label>
-                    <InputTextComponent class="flex-auto" autocomplete="off"
-                        :placeholder="'Institución o negocio remitente'" />
+                    <InputTextComponent v-model="form.remitido_a" class="flex-auto" autocomplete="off"
+                        :placeholder="'Institución o negocio remitente'" :errors="v$.remitido_a.$errors" />
                 </div>
                 <div class="flex items-center gap-2 mb-2">
                     <label class="font-semibold w-24">Descripción</label>
-                    <TextareaComponent class="flex-auto" autocomplete="off"
-                        :placeholder="'Breve descripción de la operación a realizar'" />
+                    <TextareaComponent v-model="form.descripcion" class="flex-auto" autocomplete="off"
+                        :placeholder="'Breve descripción de la operación a realizar'"
+                        :errors="v$.descripcion.$errors" />
                 </div>
                 <span class="text-surface-500 dark:text-surface-400 block mb-4">Detalles financieros</span>
                 <div class="flex flex-row gap-2">
                     <div class="flex flex-col gap-1 mb-2 w-48">
                         <label class="font-semibold w-full text-center">Monto</label>
-                        <InputNumberComponent class="flex-auto" autocomplete="off"
-                            :placeholder="'$##.##'" />
+                        <InputNumberComponent v-model="form.monto" class="flex-auto" autocomplete="off"
+                            :placeholder="'$##.##'" :errors="v$.monto.$errors" />
                     </div>
                     <div class="flex flex-col gap-1 mb-2 w-full">
                         <label class="font-semibold w-full text-center">Cuenta</label>
-                        <Select :options="accounts" class="flex-auto" autocomplete="off" :placeholder="'Cuenta asociada'" /> 
+                        <Select v-model="form.cuenta_id" :options="accounts" class="flex-auto" autocomplete="off"
+                            :placeholder="'Cuenta asociada'" :errors="v$.cuenta_id.$errors" />
                     </div>
                 </div>
-                <span class="text-surface-500 dark:text-surface-400 block mb-4">Categoría</span>
+                <span class="text-surface-500 dark:text-surface-400 block mb-2">Categoría</span>
                 <div class="flex flex-row gap-2">
-                    <div class="flex flex-col gap-1 mb-2 w-48">
-                        <label class="font-semibold w-full text-center">Tipo</label>
-                        <Select autocomplete="off"
-                            :placeholder="'Tipo'" />
-                    </div>
-                    <div class="flex flex-col gap-1 mb-2 w-full">
+                    <div class="flex flex-col gap-1 w-full">
                         <label class="font-semibold w-full text-center">Categoría</label>
-                        <Select :filter="true" :options="categories" class="flex-auto" autocomplete="off" :placeholder="'Categoría de la operación'" /> 
+                        <Select v-model="form.categoria_id" :filter="true" :options="categoriesFilter" class="flex-auto"
+                            autocomplete="off" :placeholder="'Categoría de la operación'"
+                            :errors="v$.categoria_id.$errors" />
                     </div>
                 </div>
                 <template #footer>
-                    <Button label="Cancel" text severity="secondary" @click="visible = false" autofocus />
-                    <Button label="Save" outlined severity="secondary" @click="visible = false" autofocus />
+                    <Button label="Cancelar" text severity="secondary" @click="visible = false" />
+                    <Button v-if="btnEdit" label="Guardar Cambios" severity="contrast" @click="handleEditTransaction" />
+                    <Button v-else label="Registrar" severity="success" @click="handleSaveTransaction" />
                 </template>
             </Dialog>
         </section>
@@ -133,18 +145,22 @@
 </template>
 
 <script setup>
-import { onMounted, ref, reactive, watch } from "vue";
-import { useAccountStore } from "@/stores/account.store";
-import { useTransactionStore } from "@/stores/transaction.store";
-import { useCategoryStore } from "@/stores/category.store";
-import { storeToRefs } from "pinia";
 import Select from "@/components/forms/SelectComponent.vue";
 import InputTextComponent from "@/components/forms/InputTextComponent.vue";
 import TextareaComponent from "@/components/forms/TextareaComponent.vue";
 import InputNumberComponent from "@/components/forms/InputNumberComponent.vue";
 
+import { onMounted, ref, reactive, watch, useTemplateRef, watchEffect } from "vue";
+import { useAccountStore } from "@/stores/account.store";
+import { useTransactionStore } from "@/stores/transaction.store";
+import { useCategoryStore } from "@/stores/category.store";
+import { storeToRefs } from "pinia";
+
+import { useVuelidate } from "@vuelidate/core";
+import { helpers, required } from "@vuelidate/validators";
+
 const transactionStore = useTransactionStore();
-const { fetchTransactions } = transactionStore;
+const { fetchTransactions, saveTransaction, editTransaction } = transactionStore;
 const { transactions } = storeToRefs(transactionStore);
 
 const accountStore = useAccountStore();
@@ -154,8 +170,11 @@ const { accounts } = storeToRefs(accountStore);
 const categoryStore = useCategoryStore();
 const { fetchCategories } = categoryStore;
 const { categories } = storeToRefs(categoryStore);
+const categoriesFilter = ref([]);
 
 const visible = ref(false);
+const idTransaction = ref(null);
+const btnEdit = ref(false);
 const filterTransaction = ref('');
 const transactionListFilter = ref([]);
 const typeTransaction = ref('Todos');
@@ -166,16 +185,38 @@ onMounted(async () => {
     await fetchAccounts();
     await fetchCategories();
     transactionListFilter.value = transactions.value;
+    categoriesFilter.value = categories.value.filter(categories => categories.es_entrada === 1);
 });
 
 const form = reactive({
-    cuenta: null,
-    categoria: null,
+    cuenta_id: null,
+    categoria_id: null,
+    es_entrada: true,
     descripcion: '',
     monto: null,
     remitido_a: '',
     estado: false
 });
+
+const rule = {
+    cuenta_id: {
+        required: helpers.withMessage('Asocie una cuenta', required)
+    },
+    categoria_id: {
+        required: helpers.withMessage('Seleccione la categoría de operación', required)
+    },
+    descripcion: {
+        required: helpers.withMessage('Coloque una descripción', required)
+    },
+    monto: {
+        required: helpers.withMessage('Monto de la operación', required)
+    },
+    remitido_a: {
+        required: helpers.withMessage('Debe ingresar el remitente', required)
+    }
+};
+
+const v$ = useVuelidate(rule, form);
 
 const getTransactionStatus = (status) => {
     switch (status) {
@@ -189,6 +230,13 @@ const getTransactionStatus = (status) => {
 const getTransactionDate = (date) => {
     return new Date(date).toLocaleTimeString();
 };
+
+watch(transactions, (value) => {
+    transactionListFilter.value = value.filter((transaction) => {
+        if (typeTransaction.value === 'Todos') return true;
+        return transaction.categoria.es_entrada === (typeTransaction.value === 'Ingresos' ? 1 : 0);
+    });
+});
 
 watch(filterTransaction, (value) => {
     transactionListFilter.value = transactions.value.filter((transaction) => {
@@ -204,5 +252,54 @@ watch(typeTransaction, (value) => {
         return transaction.categoria.es_entrada === (value === 'Ingresos' ? 1 : 0);
     });
 });
+
+watch(() => form.es_entrada, (newValue) => {
+    form.categoria_id = null;
+    if (newValue) 
+        categoriesFilter.value = categories.value.filter(categories => categories.es_entrada === 1);
+    else
+        categoriesFilter.value = categories.value.filter(categories => categories.es_entrada === 0);
+});
+
+const toggleNewTransaction = () => {
+    visible.value = true;
+    btnEdit.value = false;
+    idTransaction.value = null;
+    v$.value.$reset();
+    form.cuenta_id = null;
+    form.categoria_id = null;
+    form.es_entrada = true;
+    form.descripcion = '';
+    form.monto = null;
+    form.remitido_a = '';
+    form.estado = false;
+};
+
+const handleSaveTransaction = async() => {
+    v$.value.$touch();
+    if (v$.value.$invalid) return;
+    visible.value = false;
+    await saveTransaction(form);
+};
+
+const showTransaction = async (transaction) => {
+    btnEdit.value = true;
+    visible.value = true;
+    idTransaction.value = transaction.id;
+    form.cuenta_id = transaction.cuenta.id;
+    form.es_entrada = (transaction.categoria.es_entrada == 1)? true : false;
+    form.categoria_id = await transaction.categoria.id;
+    form.descripcion = transaction.descripcion;
+    form.monto = transaction.monto;
+    form.remitido_a = transaction.remitido_a;
+    form.estado = (transaction.estado == 1)? true : false;
+};
+
+const handleEditTransaction = async () => {
+    v$.value.$touch();
+    if (v$.value.$invalid) return;
+    visible.value = false;
+    await editTransaction(idTransaction.value, form);
+};
 
 </script>

@@ -1,6 +1,6 @@
 <template>
     <article class="flex flex-col mb-2">
-        <Textarea v-model="model" :rows="rows" class="resize-none" :placeholder="placeholder"/>
+        <Textarea :invalid="invalid" v-model="model" :rows="rows" class="resize-none" :placeholder="placeholder"/>
         <Message v-if="errors" severity="error" size="small" variant="simple">
             <small v-for="error in errors" class="font-normal">
                 {{ error.$message }}
@@ -10,7 +10,9 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 
+const invalid = computed(() => errors.length > 0);
 const model = defineModel();
 const { placeholder, errors, type } = defineProps({
     rows: {

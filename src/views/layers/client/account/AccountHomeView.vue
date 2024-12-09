@@ -40,11 +40,6 @@ const { accounts, loadingAccount } = storeToRefs(accountStore);
 onMounted(async () => {
     await fetchBanks();
     await fetchAccounts();
-    console.log("accounts");
-});
-
-onUnmounted(() => {
-    loadingAccount.value = true;
 });
 
 </script>

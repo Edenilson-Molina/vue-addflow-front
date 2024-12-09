@@ -11,3 +11,13 @@ export const getTransactions = async () => {
     });
     return response;
 }
+
+export const createTransaction = async (transaction) => {
+    const response = await network.post('/transacciones', transaction);
+    return response;
+}
+
+export const updateTransaction = async (id, transaction) => {
+    const response = await network.put(`/transacciones/${id}`, transaction);
+    return response;
+}
