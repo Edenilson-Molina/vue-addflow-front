@@ -18,7 +18,6 @@
                 </TabList>
                 <TabPanels>
                     <TabPanel value="0">
-                        
                         <div class="card">
                             <DataTable v-model:filters="filters" 
                                 :value="categoriesIngresos" tableStyle="min-width: 50rem" selectionMode="single" :loading="loadingCategories">
@@ -83,8 +82,8 @@ const categoriesEgresos = ref([]);
 
 onMounted(async () => {
     await fetchCategories();
-    categoriesIngresos.value = categories.value.filter((category) => category.es_entrada === 1);
-    categoriesEgresos.value = categories.value.filter((category) => category.es_entrada === 0);
+    categoriesIngresos.value = categories.value.filter((category) => category.es_entrada === true);
+    categoriesEgresos.value = categories.value.filter((category) => category.es_entrada === false);
 });
 
 </script>

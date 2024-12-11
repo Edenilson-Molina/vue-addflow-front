@@ -21,3 +21,15 @@ export const updateTransaction = async (id, transaction) => {
     const response = await network.put(`/transacciones/${id}`, transaction);
     return response;
 }
+
+export const getTotalByDate = async () => {
+    const currentMonth = new Date().getMonth() + 1;
+    const currentDay = new Date().getDate();
+    const currentYear = new Date().getFullYear();
+    const response = await network.post('/transacciones/total-by-date',
+        {
+            "date": `${currentYear}-${currentMonth}-${currentDay}`
+        }
+    );
+    return response;
+}

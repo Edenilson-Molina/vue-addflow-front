@@ -13,6 +13,7 @@ import Aura from '@primevue/themes/aura';
 import Ripple from 'primevue/ripple';
 import ToastService from 'primevue/toastservice';
 import 'primeicons/primeicons.css';
+import AnimateOnScroll from 'primevue/animateonscroll';
 import Menubar from 'primevue/menubar';
 import Avatar from 'primevue/avatar';
 import Badge from 'primevue/badge';
@@ -43,6 +44,7 @@ import SelectButton from 'primevue/selectbutton';
 import Textarea from 'primevue/textarea';
 import ToggleButton from 'primevue/togglebutton';
 import ToggleSwitch from 'primevue/toggleswitch';
+import Panel from 'primevue/panel';
 
 
 const app = createApp(App);
@@ -52,6 +54,7 @@ pinia.use(piniaPluginPersistedstate);
 
 // Register global components Primevue
 app.directive('ripple', Ripple);
+app.directive('animateonscroll', AnimateOnScroll);
 app.component('Menubar', Menubar);
 app.component('Avatar', Avatar);
 app.component('Badge', Badge);
@@ -82,6 +85,7 @@ app.component('SelectButton', SelectButton);
 app.component('Textarea', Textarea);
 app.component('ToggleButton', ToggleButton);
 app.component('ToggleSwitch', ToggleSwitch);
+app.component('Panel', Panel);
 
 // Installation plugin
 app.use(pinia);

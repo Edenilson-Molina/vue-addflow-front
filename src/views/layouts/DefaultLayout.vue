@@ -2,8 +2,12 @@
     <header class="fixed top-0 left-0 p-4 w-full z-10">
         <Menubar :model="items">
             <template #start>
-                <img class="w-8 mr-1" src="/src/assets/logo.svg" alt="Logo de Flujo de Caja">
-                <h1>Flujo de caja</h1>
+                <router-link to="/">
+                    <div class="flex gap-1 items-center">
+                        <img class="w-8 mr-1" src="/src/assets/logo.svg" alt="Logo de Flujo de Caja">
+                        <h1>Flujo de caja</h1>    
+                    </div>
+                </router-link>
             </template>
             <template #item="{ item, props, hasSubmenu, root }">
                 <router-link v-if="item.name" v-slot="{ isActive }" :to="{ name: item.name }">
@@ -30,12 +34,13 @@
             </template>
             <template #end>
                 <div class="flex items-center gap-2">
+                    <span>{{ user.name }}</span>
                     <Avatar image="/avatar.png" shape="circle" />
                 </div>
             </template>
         </Menubar>
     </header>
-    <main class="flex flex-1 px-16 pt-20 overflow-y-auto">
+    <main class="flex flex-1 px-16 pt-24 overflow-y-auto">
         <router-view />
     </main>
     <footer class="text-white p-4 w-full">
@@ -46,15 +51,15 @@
 </template>
 
 <script setup>
-
 import { ref } from "vue";
+import { useAuthStore } from "@/stores/auth.store";
+import { storeToRefs } from "pinia";
+
+const authStore = useAuthStore();
+const { user } = storeToRefs(authStore);
+
 
 const items = ref([
-    {
-        label: 'Dashboard',
-        name: 'dashboard',
-        icon: 'pi pi-home',
-    },
     {
         label: 'Operaciones del día',
         name: 'transactions',

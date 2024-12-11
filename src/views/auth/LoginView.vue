@@ -3,7 +3,7 @@
         <Fieldset class="w-full md:w-1/2 lg:w-1/4">
             <template #legend>
                 <header class="flex justify-center items-center gap-1">
-                    <img class="w-20" src="/src/assets/logo.svg" alt="">
+                    <img class="w-20" src="/src/assets/logo.svg" alt="Flujo de Caja">
                     <h1 class="text-lg">Flujo de Caja</h1>
                 </header>
             </template>

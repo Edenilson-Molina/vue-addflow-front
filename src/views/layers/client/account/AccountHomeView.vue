@@ -8,7 +8,7 @@
             <ProgressSpinner/>
         </section>
         <section v-else class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <Fieldset class="animate-scalein animate-once animate-duration-1000" v-for="account in accounts" :key="account.id" :legend="account.nombre">
+            <Fieldset class="animate-scalein animate-once animate-duration-75" v-for="account in accounts" :key="account.id" :legend="account.nombre">
                 <div class="flex flex-col gap-2">
                     <div class="flex gap-2 justify-between items-center">
                         <Chip v-if="account.banco" :icon="'pi pi-credit-card'" :label="account.tipo_cuenta.nombre" />
