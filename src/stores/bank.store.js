@@ -6,20 +6,20 @@ import {
 
 export const useBankStore = defineStore('bank', () => {
     const banks = ref([]);
-    const loading = ref(false);
+    const loadingBanks = ref(false);
 
     const fetchBanks = async () => {
-        loading.value = true;
+        loadingBanks.value = true;
         const response = await getBanks();
         if (response?.status === 200) {
             banks.value = response?.data?.data;
         }
-        loading.value = false;
+        loadingBanks.value = false;
     };
 
     return {
         banks,
-        loading,
+        loadingBanks,
         fetchBanks,
     };
 });

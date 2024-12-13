@@ -43,7 +43,7 @@
             </div>
             <div class="flex flex-col gap-1 mb-2 w-full">
                 <label class="font-semibold w-full text-center">Cuenta</label>
-                <Select v-model="form.cuenta_id" :options="accounts" class="flex-auto" 
+                <Select v-model="form.cuenta_id" :options="accounts" :loading="loadingAccount" class="flex-auto" 
                     :placeholder="'Cuenta asociada'" :errors="v$.cuenta_id.$errors" />
             </div>
         </div>
@@ -51,7 +51,7 @@
         <div class="flex flex-row gap-2">
             <div class="flex flex-col gap-1 w-full">
                 <label class="font-semibold w-full text-center">Categoría</label>
-                <Select v-model="form.categoria_id" :filter="true" :options="categoriesFilter" class="flex-auto"
+                <Select v-model="form.categoria_id" :filter="true" :options="categoriesFilter" :loading="loadingCategories" class="flex-auto"
                     :placeholder="'Categoría de la operación'" :errors="v$.categoria_id.$errors" />
             </div>
         </div>
@@ -77,8 +77,16 @@ const props = defineProps({
         type: Array,
         required: true
     },
+    loadingAccount: {
+        type: Boolean,
+        required: true
+    },
     categoriesFilter: {
         type: Array,
+        required: true
+    },
+    loadingCategories: {
+        type: Boolean,
         required: true
     },
     btnEdit: {

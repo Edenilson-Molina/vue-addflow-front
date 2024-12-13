@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
-import { login } from '@/services/auth.services';
+import { login, logout } from '@/services/auth.services';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -22,7 +22,15 @@ export const useAuthStore = defineStore('auth', {
         this.token = null;
         this.user = null;
       }
-    }
+    },
+    async logout() {
+      const response = await logout();
+      if (response?.status === 200) {
+        this.authenticated = false;
+        this.token = null;
+        this.user = null;
+      }
+    },
   },
   persist: true,
 });

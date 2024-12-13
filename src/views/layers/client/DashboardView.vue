@@ -32,7 +32,4 @@
 
 <script setup>
 import DashboardPanel from "./components/DashboardPanel.vue";
-
-const date = Date.now();
-
 </script>

@@ -5,7 +5,7 @@
             <p class="text-gray-500">Administra tus cuentas</p>
         </header>
         <section v-if="loadingAccount" class="flex flex-1 justify-center items-center">
-            <ProgressSpinner/>
+            <ProgressSpinner strokeWidth="5"/>
         </section>
         <section v-else class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <Fieldset class="animate-scalein animate-once animate-duration-75" v-for="account in accounts" :key="account.id" :legend="account.nombre">
@@ -25,21 +25,20 @@
     </section>
 </template>
 <script setup>
-import { onMounted, onUnmounted, ref } from "vue";
+import {onMounted } from "vue";
+import { storeToRefs } from "pinia";
 import { useBankStore } from "@/stores/bank.store";
 import { useAccountStore } from "@/stores/account.store";
-import { storeToRefs } from "pinia";
 
 const bankStore = useBankStore();
 const accountStore = useAccountStore();
 const { fetchBanks } = bankStore;
 const { fetchAccounts } = accountStore;
-const { banks } = storeToRefs(bankStore);
 const { accounts, loadingAccount } = storeToRefs(accountStore);
 
 onMounted(async () => {
-    await fetchBanks();
     await fetchAccounts();
 });
+
 
 </script>

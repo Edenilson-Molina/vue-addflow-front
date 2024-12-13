@@ -1,6 +1,6 @@
 <template>
     <section class="container mx-auto">
-        <header class="flex justify-between items-center">
+        <header class="flex flex-col sm:flex-row justify-between items-center">
             <article>
                 <h1 class="text-3xl font-bold">Operaciones</h1>
                 <p class="text-gray-500">LLeva un seguimiento y registra las operaciones del día</p>
@@ -10,9 +10,13 @@
             </article>
         </header>
         <section class="flex flex-col gap-1 mt-2">
-            <TransactionToolbar v-model:filterTransaction="filterTransaction" v-model:typeTransaction="typeTransaction" :optionsTypeTransaction="optionsTypeTransaction" @toggleNewTransaction="toggleNewTransaction"/>
-            <TransactionFormDialog v-model:visible="visible" v-model:form="form" :v$="v$" :btnEdit="btnEdit" :accounts="accounts" :categoriesFilter="categoriesFilter" @handleSaveTransaction="handleSaveTransaction" @handleEditTransaction="handleEditTransaction" />
-            <TransactionDataView :transactionListFilter="transactionListFilter" @showTransaction="showTransaction"/>
+            <TransactionToolbar v-model:filterTransaction="filterTransaction" v-model:typeTransaction="typeTransaction" 
+                :optionsTypeTransaction="optionsTypeTransaction" @toggleNewTransaction="toggleNewTransaction" />
+            <TransactionFormDialog v-model:visible="visible" v-model:form="form" :v$="v$" :btnEdit="btnEdit" :accounts="accounts" 
+                :loadingAccount="loadingAccount" :categoriesFilter="categoriesFilter" :loadingCategories="loadingCategories" 
+                @handleSaveTransaction="handleSaveTransaction" @handleEditTransaction="handleEditTransaction" />
+            <TransactionDataView :transactionListFilter="transactionListFilter" :loadingTransaction="loadingTransaction" 
+                @showTransaction="showTransaction" />
         </section>
     </section>
 </template>
@@ -23,7 +27,7 @@ import TransactionFormDialog from "./components/TransactionFormDialog.vue";
 import TransactionDataView from "./components/TransactionDataView.vue";
 import TransactionToolbar from "./components/TransactionToolbar.vue";
 
-import { onMounted, ref, watch } from "vue";
+import { onMounted, onUnmounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useAccountStore } from "@/stores/account.store";
 import { useTransactionStore } from "@/stores/transaction.store";
@@ -34,16 +38,16 @@ import { helpers, required } from "@vuelidate/validators";
 
 const transactionStore = useTransactionStore();
 const { fetchTransactions, saveTransaction, editTransaction } = transactionStore;
-const { transactions } = storeToRefs(transactionStore);
+const { transactions, loadingTransaction } = storeToRefs(transactionStore);
 const transactionListFilter = ref([]);
 
 const accountStore = useAccountStore();
 const { fetchAccounts } = accountStore;
-const { accounts } = storeToRefs(accountStore);
+const { accounts, loadingAccount } = storeToRefs(accountStore);
 
 const categoryStore = useCategoryStore();
 const { fetchCategories } = categoryStore;
-const { categories } = storeToRefs(categoryStore);
+const { categories, loadingCategories } = storeToRefs(categoryStore);
 const categoriesFilter = ref([]);
 
 const visible = ref(false);
@@ -149,7 +153,6 @@ const showTransaction = (transaction) => {
     form.value.monto = transaction.monto;
     form.value.remitido_a = transaction.remitido_a;
     form.value.estado = transaction.estado;
-
 };
 
 const handleEditTransaction = async () => {

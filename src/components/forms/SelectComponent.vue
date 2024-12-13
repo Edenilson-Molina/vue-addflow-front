@@ -1,6 +1,6 @@
 <template>
     <article class="flex flex-col mb-2 w-full">
-        <Select :invalid="invalid" :filter="filter" v-model="model" :options="options" :optionLabel="optionLabel" :optionValue="optionValue" :placeholder="placeholder"
+        <Select :loading="loading" :invalid="invalid" :filter="filter" v-model="model" :options="options" :optionLabel="optionLabel" :optionValue="optionValue" :placeholder="placeholder"
         class="w-full">
         <template #emptyfilter>
             <p>No se encontraron resultados</p>
@@ -35,6 +35,10 @@ const { errors } = defineProps({
     placeholder: {
         type: String,
         default: ''
+    },
+    loading: {
+        type: Boolean,
+        default: false
     },
     filter: {
         type: Boolean,

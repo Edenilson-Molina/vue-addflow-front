@@ -23,7 +23,7 @@
 
   @font-face {
     font-family: "Parkinsans";
-    src: url("@/assets/fonts/OTF/Parkinsans-Ligth.ttf") format("opentype");
+    src: url("@/assets/fonts/OTF/Parkinsans-Light.ttf") format("opentype");
     font-style: normal;
     font-weight: 300;
     font-display: swap;

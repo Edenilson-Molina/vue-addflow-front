@@ -1,7 +1,8 @@
 <template>
     <DataView class="w-full" :value="transactionListFilter" paginator :rows="4">
         <template #empty>
-            <div class="flex flex-col items-center justify-center gap-1">
+            <ProgressSpinner v-if="loadingTransaction" class="w-full" strokeWidth="5"/>
+            <div v-else class="flex flex-col items-center justify-center gap-1">
                 <i class="pi pi-money-bill text-6xl text-surface-300 dark:text-surface-700"></i>
                 <p class="text-surface-500 dark:text-surface-400">No hay transacciones registradas</p>
             </div>
@@ -66,6 +67,10 @@ const getTransactionStatus = (status) => {
 const props = defineProps({
     transactionListFilter: {
         type: Array,
+        required: true,
+    },
+    loadingTransaction: {
+        type: Boolean,
         required: true,
     },
 });

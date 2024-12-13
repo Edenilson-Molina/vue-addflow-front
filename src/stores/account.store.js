@@ -9,6 +9,7 @@ export const useAccountStore = defineStore('account', () => {
     const loadingAccount = ref(false);
 
     const fetchAccounts = async () => {
+        if(loadingAccount.value) return;
         loadingAccount.value = true;
         const response = await getAccounts();
         if (response?.status === 200) {

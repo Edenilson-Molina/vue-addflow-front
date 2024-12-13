@@ -14,6 +14,7 @@ import Ripple from 'primevue/ripple';
 import ToastService from 'primevue/toastservice';
 import 'primeicons/primeicons.css';
 import AnimateOnScroll from 'primevue/animateonscroll';
+import Menu from 'primevue/menu';
 import Menubar from 'primevue/menubar';
 import Avatar from 'primevue/avatar';
 import Badge from 'primevue/badge';
@@ -55,6 +56,7 @@ pinia.use(piniaPluginPersistedstate);
 // Register global components Primevue
 app.directive('ripple', Ripple);
 app.directive('animateonscroll', AnimateOnScroll);
+app.component('Menu', Menu);
 app.component('Menubar', Menubar);
 app.component('Avatar', Avatar);
 app.component('Badge', Badge);
