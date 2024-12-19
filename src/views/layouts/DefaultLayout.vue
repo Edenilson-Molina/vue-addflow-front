@@ -69,7 +69,7 @@
             </template>
         </Menubar>
     </header>
-    <main class="flex flex-1 px-16 pt-24 overflow-y-auto">
+    <main class="grow flex px-16 pt-24">
         <router-view />
     </main>
     <footer class="text-white p-4 w-full">
@@ -153,7 +153,7 @@ const items = ref([
         items: [
             {
                 label: 'Flujo de caja diario',
-                name: 'accounts',
+                name: 'flujo-caja-diario',
                 icon: 'pi pi-file',
             },
         ]

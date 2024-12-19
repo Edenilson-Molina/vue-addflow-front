@@ -15,7 +15,7 @@
                     <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">
                       {{ new Date(date).toLocaleDateString() }}
                     </p>
-                    <p class="text-2xl font-bold text-gray-800 dark:text-gray-200">$Pendiente</p>
+                    <p class="text-2xl font-bold text-gray-800 dark:text-gray-200">${{ flujoCajaDiario?.saldo_inicial }}</p>
                 </div>
             </article>
         </Panel>
@@ -59,14 +59,18 @@
 <script setup>
 import { onMounted } from "vue";
 import { useTransactionStore } from "@/stores/transaction.store";
+import { useFlujoCajaStore } from "@/stores/flujo-caja.store";
 import { storeToRefs } from "pinia";
 
 const transactionStore = useTransactionStore();
+const flujoCajaStore = useFlujoCajaStore();
 const { income, expense } = storeToRefs(transactionStore);
+const { flujoCajaDiario } = storeToRefs(flujoCajaStore);
 const date = Date.now();
 const today = new Intl.DateTimeFormat("es", { weekday: "long" }).format(date);
 
 onMounted(async () => {
     await transactionStore.totalByDate();
+    await flujoCajaStore.fetchFlujoCajaDiario(new Date());
 });
 </script>

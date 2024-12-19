@@ -10,12 +10,12 @@
             </article>
         </header>
         <section class="flex flex-col gap-1 mt-2">
-            <TransactionToolbar v-model:filterTransaction="filterTransaction" v-model:typeTransaction="typeTransaction" 
+            <TransactionToolbar v-model:filterTransaction="filterTransaction" v-model:typeTransaction="typeTransaction"
                 :optionsTypeTransaction="optionsTypeTransaction" @toggleNewTransaction="toggleNewTransaction" />
-            <TransactionFormDialog v-model:visible="visible" v-model:form="form" :v$="v$" :btnEdit="btnEdit" :accounts="accounts" 
-                :loadingAccount="loadingAccount" :categoriesFilter="categoriesFilter" :loadingCategories="loadingCategories" 
+            <TransactionFormDialog v-model:visible="visible" v-model:form="form" :v$="v$" :btnEdit="btnEdit" :accounts="accounts"
+                :loadingAccount="loadingAccount" :categoriesFilter="categoriesFilter" :loadingCategories="loadingCategories"
                 @handleSaveTransaction="handleSaveTransaction" @handleEditTransaction="handleEditTransaction" />
-            <TransactionDataView :transactionListFilter="transactionListFilter" :loadingTransaction="loadingTransaction" 
+            <TransactionDataView :transactionListFilter="transactionListFilter" :loadingTransaction="loadingTransaction"
                 @showTransaction="showTransaction" />
         </section>
     </section>
@@ -65,7 +65,7 @@ const form = ref({
     descripcion: '',
     monto: null,
     remitido_a: '',
-    estado: false
+    estado: true
 });
 
 // Validation
@@ -113,7 +113,7 @@ watch(typeTransaction, (value) => {
 });
 
 watch(() => form.value.es_entrada, () => {
-    categoriesFilter.value = categories.value.filter(categorie => categorie.es_entrada === form.value.es_entrada);
+    categoriesFilter.value = categories.value.filter(categorie => categorie.es_entrada === form.value.es_entrada && categorie.estado === true);
 });
 
 // Functions
@@ -131,13 +131,13 @@ const toggleNewTransaction = () => {
     form.value.descripcion = '';
     form.value.monto = null;
     form.value.remitido_a = '';
-    form.value.estado = false;
+    form.value.estado = true;
 };
 
 const handleSaveTransaction = async() => {
     v$.value.$touch();
     if (v$.value.$invalid) return;
-    
+
     visible.value = false;
     await saveTransaction(form.value);
 };
@@ -167,7 +167,7 @@ onMounted(async () => {
     await fetchTransactions();
     await fetchAccounts();
     await fetchCategories();
-    categoriesFilter.value = categories.value.filter(categorie => categorie.es_entrada === form.value.es_entrada);
+    categoriesFilter.value = categories.value.filter(categorie => categorie.es_entrada === form.value.es_entrada && categorie.estado === true);
     transactionListFilter.value = transactions.value;
 });
 </script>

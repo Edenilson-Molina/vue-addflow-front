@@ -3,6 +3,7 @@ import systemRoutes from './system-routes';
 import accountRoutes from './account-routes';
 import categoryRoutes from './category-routes';
 import transactionRoutes from './transaction-routes';
+import flowMoney from './flow-money';
 import { useAuthStore } from '@/stores/auth.store';
 import { storeToRefs } from 'pinia';
 
@@ -25,6 +26,7 @@ const routes = [
       ...accountRoutes,
       ...categoryRoutes,
       ...transactionRoutes,
+      ...flowMoney
     ]
   },
   {

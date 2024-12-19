@@ -1,12 +1,11 @@
 import network from './network.services';
+import { dateToApiFormat } from '@/utils/global-functions';
 
 export const getTransactions = async () => {
-    const currentMonth = new Date().getMonth() + 1;
-    const currentDay = new Date().getDate();
-    const currentYear = new Date().getFullYear();
+    const apiDate = dateToApiFormat(new Date());
     const response = await network.post('/transacciones/search', {
         "filters": [
-            { 'field': 'created_at', 'operator': '=', 'value': `${currentYear}-${currentMonth}-${currentDay}` }
+            { 'field': 'created_at', 'operator': '=', 'value': apiDate }
         ],
     });
     return response;
@@ -23,12 +22,10 @@ export const updateTransaction = async (id, transaction) => {
 }
 
 export const getTotalByDate = async () => {
-    const currentMonth = new Date().getMonth() + 1;
-    const currentDay = new Date().getDate();
-    const currentYear = new Date().getFullYear();
+    const apiDate = dateToApiFormat(new Date());
     const response = await network.post('/transacciones/total-by-date',
         {
-            "date": `${currentYear}-${currentMonth}-${currentDay}`
+            "date": apiDate
         }
     );
     return response;

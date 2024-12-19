@@ -46,6 +46,8 @@ import Textarea from 'primevue/textarea';
 import ToggleButton from 'primevue/togglebutton';
 import ToggleSwitch from 'primevue/toggleswitch';
 import Panel from 'primevue/panel';
+import IftaLabel from 'primevue/iftalabel';
+import DatePicker from 'primevue/datepicker';
 
 
 const app = createApp(App);
@@ -88,6 +90,8 @@ app.component('Textarea', Textarea);
 app.component('ToggleButton', ToggleButton);
 app.component('ToggleSwitch', ToggleSwitch);
 app.component('Panel', Panel);
+app.component('IftaLabel', IftaLabel);
+app.component('DatePicker', DatePicker);
 
 // Installation plugin
 app.use(pinia);
@@ -103,6 +107,12 @@ app.use(PrimeVue, {
                 order: 'tailwind-base, primevue, tailwind-utilities'
             }
         }
+    },
+    locale:{
+        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
     }
  });
 

@@ -1,7 +1,9 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import {
-    getCategories
+    getCategories,
+    createCategory,
+    updateCategory
 } from '@/services/category.services';
 
 export const useCategoryStore = defineStore('category', () => {
@@ -17,9 +19,35 @@ export const useCategoryStore = defineStore('category', () => {
         loadingCategories.value = false;
     }
 
+    const saveCategory = async (category) => {
+      console.log(category);
+      loadingCategories.value = true;
+        const response = await createCategory(category);
+        if (response?.status === 201) {
+            categories.value = [...categories.value, response?.data?.data];
+        }
+        loadingCategories.value = false;
+    }
+
+    const editCategory = async (id, category) => {
+        loadingCategories.value = true;
+        const response = await updateCategory(id, category);
+        if (response?.status === 200) {
+            categories.value = categories.value.map((item) => {
+                if (item.id === id) {
+                    return response?.data?.data;
+                }
+                return item;
+            });
+        }
+        loadingCategories.value = false;
+    }
+
     return {
         categories,
         loadingCategories,
-        fetchCategories
+        fetchCategories,
+        saveCategory,
+        editCategory
     }
 });
