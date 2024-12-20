@@ -27,7 +27,7 @@ import TransactionFormDialog from "./components/TransactionFormDialog.vue";
 import TransactionDataView from "./components/TransactionDataView.vue";
 import TransactionToolbar from "./components/TransactionToolbar.vue";
 
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useAccountStore } from "@/stores/account.store";
 import { useTransactionStore } from "@/stores/transaction.store";
@@ -137,9 +137,8 @@ const toggleNewTransaction = () => {
 const handleSaveTransaction = async() => {
     v$.value.$touch();
     if (v$.value.$invalid) return;
-
     visible.value = false;
-    await saveTransaction(form.value);
+    await saveTransaction(form.value);  
 };
 
 const showTransaction = (transaction) => {
@@ -168,6 +167,6 @@ onMounted(async () => {
     await fetchAccounts();
     await fetchCategories();
     categoriesFilter.value = categories.value.filter(categorie => categorie.es_entrada === form.value.es_entrada && categorie.estado === true);
-    transactionListFilter.value = transactions.value;
+    //transactionListFilter.value = transactions.value;
 });
 </script>

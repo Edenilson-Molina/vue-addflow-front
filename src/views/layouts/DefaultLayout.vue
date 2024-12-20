@@ -71,6 +71,7 @@
     </header>
     <main class="grow flex px-16 pt-24">
         <router-view />
+        <Toast position="top-center" />
     </main>
     <footer class="text-white p-4 w-full">
         <div class="container mx-auto text-center">

@@ -4,3 +4,7 @@ export const dateToApiFormat = (date) => {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
 }
+
+export const formatNumber = (num) => {
+  return parseFloat(num).toLocaleString('es-SV', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};

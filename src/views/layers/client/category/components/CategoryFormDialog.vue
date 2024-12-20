@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model:visible="visible" modal :style="{ width: '30rem' }">
+  <Dialog v-model:visible="visible" modal :style="{ width: '30rem' }" position="top">
     <template #header>
       <div class="inline-flex items-center justify-between gap-2 w-full mr-2">
         <div class="flex items-center gap-2">

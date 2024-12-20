@@ -1,13 +1,22 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { getTransactions, createTransaction, updateTransaction, getTotalByDate } from "@/services/transaction.services";
+import { 
+    getTransactions, 
+    createTransaction, 
+    updateTransaction, 
+    getTotalByDate,
+    getTransactionsCategory
+} from "@/services/transaction.services";
+import { useToast } from "primevue/usetoast";
 
 export const useTransactionStore = defineStore("transaction", () => {
     const dateTransaction = ref('');
-    const income = ref(0.00);
     const expense = ref(0.00);
-    const transactions = ref([]);
+    const income = ref(0.00);
     const loadingTransaction = ref(false);
+    const transactions = ref([]);
+    // Notificaciones
+    const toast = useToast();
     
     const fetchTransactions = async () => {
         loadingTransaction.value = true;
@@ -19,12 +28,29 @@ export const useTransactionStore = defineStore("transaction", () => {
         loadingTransaction.value = false;
     };
 
+    const fetchTransactionsCategory = async (categoria_id, created_at) => {
+        loadingTransaction.value = true;
+        const response = await getTransactionsCategory(categoria_id, created_at);
+        if (response?.status === 200) {
+            transactions.value = response?.data?.data;
+            await totalByDate();
+        }
+        loadingTransaction.value = false;
+    }
+
     const saveTransaction = async (transaction) => {
         loadingTransaction.value = true;
         const response = await createTransaction(transaction);
         if (response?.status === 201) {
             transactions.value = [...transactions.value, response?.data?.data];
             await totalByDate();
+            // Notificación
+            toast.add({
+                severity: 'success',
+                summary: 'Operación registrada',
+                detail: 'La operación se ha registrado correctamente',
+                life: 3000
+            });
         }
         loadingTransaction.value = false;
     }
@@ -40,6 +66,13 @@ export const useTransactionStore = defineStore("transaction", () => {
                 return item;
             });
             await totalByDate();
+            // Notificación
+            toast.add({
+                severity: 'success',
+                summary: 'Operación actualizada',
+                detail: 'La operación se ha actualizado correctamente',
+                life: 3000
+            });
         }
         loadingTransaction.value = false;
     }
@@ -54,14 +87,15 @@ export const useTransactionStore = defineStore("transaction", () => {
     }
     
     return {
+        dateTransaction,
+        expense,
+        income,
         loadingTransaction,
         transactions,
-        dateTransaction,
-        income,
-        expense,
+        editTransaction,
         fetchTransactions,
         saveTransaction,
-        editTransaction,
         totalByDate,
+        fetchTransactionsCategory
     };
 });

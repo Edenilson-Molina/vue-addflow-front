@@ -1,6 +1,6 @@
 <template>
     <section class="flex flex-1 justify-center items-center w-full">
-        <Fieldset class="w-full md:w-1/2 lg:w-1/4">
+        <Fieldset class="w-auto md:w-1/2 lg:w-1/4">
             <template #legend>
                 <header class="flex justify-center items-center gap-1">
                     <img class="w-20" src="/src/assets/logo.svg" alt="Flujo de Caja">
@@ -57,6 +57,7 @@ const authStore = useAuthStore();
 const { authenticated } = storeToRefs(authStore);
 const { login } = authStore;
 const router = useRouter();
+
 const handleLogin = async () => {
     v$.value.$touch();
     if (v$.value.$error) return;

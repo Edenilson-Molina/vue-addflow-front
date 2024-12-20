@@ -80,7 +80,13 @@
                 <template #empty> No hay registros</template>
                 <Column field="nombre" header="Categoría"></Column>
                 <Column field="descripcion" header="Descripción"></Column>
-                <Column header="Acciones" body-class="flex justify-center" header-class="flex justify-center">
+                <Column header="Estado" header-class="flex justify-center" body-class="text-center">
+                  <template #body="slotProps">
+                    <Tag :severity="slotProps.data.estado ? 'success' : 'danger'" rounded
+                         :value="slotProps.data.estado ? 'Activo' : 'Inactivo'"/>
+                  </template>
+                </Column>
+                <Column class="text-center">
                   <template #body="slotProps">
                     <Button icon="pi pi-pencil" rounded severity="success" variant="outlined" text
                             @click="showCategory(slotProps.data)"/>
@@ -115,6 +121,7 @@ const form = ref({
   estado: true,
   es_entrada: true,
 });
+
 const rules = {
   nombre: {
     required: helpers.withMessage('Se necesita el nombre de la categoria', required),
