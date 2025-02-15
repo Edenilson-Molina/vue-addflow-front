@@ -44,8 +44,7 @@
             </thead>
             <tbody>
             <tr class="">
-              <th scope="row"
-                  class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              <th scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                 Saldo Inicial
               </th>
               <td></td>
@@ -57,8 +56,7 @@
               </th>
             </tr>
             <tr class=" border-b dark: dark:border-gray-700 ">
-              <th scope="row"
-                  class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              <th scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                 Ingresos
               </th>
               <td></td>
@@ -72,7 +70,7 @@
             <template v-for="category in totalByCategories">
               <tr v-if="category.es_entrada">
                 <th scope="row" class="px-10 py-2 cursor-pointer"
-                    @click="transactionsCategory(category.id, flujoCajaDiario.created_at)">
+                    @click="transactionsCategory(category.id, flujoCajaDiario.updated_at)">
                   {{ category.nombre }}
                 </th>
                 <td class="flex justify-between px-6 py-2">
@@ -99,7 +97,7 @@
             <template v-for="category in totalByCategories">
               <tr v-if="!category.es_entrada" :key="category.id">
                 <th scope="row" class="px-10 py-2 cursor-pointer"
-                    @click="transactionsCategory(category.id, flujoCajaDiario.created_at)">
+                    @click="transactionsCategory(category.id, flujoCajaDiario.updated_at)">
                   {{ category.nombre }}
                 </th>
                 <td class="flex justify-between px-6 py-2">
@@ -125,7 +123,7 @@
             </tr>
             </tbody>
           </table>
-          <Dialog modal v-model:visible="visible" :header="transactions[0].categoria.nombre" :style="{ width: '25rem' }" position="center">
+          <Dialog modal v-model:visible="visible" v-if="visible" :header="transactions[0].categoria.nombre" :style="{ width: '25rem' }" position="center">
             <div class="flex justify-center" v-if="loadingTransaction">
               <VueSpinnerPuff size="50"/>
             </div>

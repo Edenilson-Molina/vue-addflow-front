@@ -14,8 +14,16 @@ export const getTransactions = async () => {
 export const getTransactionsCategory = async (categoria_id, created_at) => {
     const response = await network.post('/transacciones/search', {
         "filters": [
-            { 'field': 'categoria_id', 'operator': '=', 'value': categoria_id },
-            { 'field': 'created_at', 'operator': '=', 'value': dateToApiFormat(new Date(created_at)) }
+            {
+                'field': 'categoria_id',
+                'operator': '=',
+                'value': categoria_id
+            },
+            {
+                'field': 'created_at',
+                'operator': '=',
+                'value': dateToApiFormat(new Date(created_at))
+            }
         ],
     });
     return response;
