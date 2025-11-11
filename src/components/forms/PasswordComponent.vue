@@ -1,6 +1,6 @@
 <template>
     <article class="flex flex-col mb-2">
-        <Password :invalid="invalid"input-class="w-full" v-model="model" :placeholder="placeholder" :feedback="feedback" toggleMask/>
+        <Password :invalid="invalid" input-class="w-full" v-model="model" :placeholder="placeholder" :feedback="feedback" toggleMask/>
         <Message v-if="errors" severity="error" size="small" variant="simple">
             <small v-for="error in errors" class="font-normal">
                 {{ error.$message }}

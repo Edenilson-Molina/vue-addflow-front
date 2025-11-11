@@ -1,6 +1,6 @@
 <template>
-    <header class="fixed top-0 left-0 p-4 w-full z-10">
-        <Menubar :model="items">
+    <header class="fixed top-0 left-0 w-full z-10">
+        <Menubar :model="items" class="rounded-none border-none backdrop-blur-md bg-white/30 dark:bg-[#18181b]/30 px-6" pt:root:class="h-16">
             <template #start>
                 <router-link to="/">
                     <div class="flex gap-1 items-center">
@@ -9,24 +9,17 @@
                     </div>
                 </router-link>
             </template>
-            <template #item="{ item, props, hasSubmenu, root }">
+            <template #item="{ item, props, hasSubmenu }">
                 <router-link v-if="item.name" v-slot="{ isActive }" :to="{ name: item.name }">
                     <a v-ripple class="flex items-center" v-bind="props.action">
-                        <div class="flex items-center gap-1" :class="{ 'text-blue-400': isActive }">
+                        <div class="flex items-center gap-2" :class="{ 'text-blue-400': isActive }">
                             <span :class="item.icon" />
                             <span>{{ item.label }}</span>
                         </div>
-                        <Badge v-if="item.badge" :class="{ 'ml-auto': !root, 'ml-2': root }" :value="item.badge" />
-                        <span v-if="item.shortcut"
-                            class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">
-                            {{ item.shortcut }}
-                        </span>
-                        <i v-if="hasSubmenu"
-                            :class="['pi pi-angle-down ml-auto', { 'pi-angle-down': root, 'pi-angle-right': !root }]">
-                        </i>
+
                     </a>
                 </router-link>
-                <a v-else v-ripple v-bind="props.action">
+                <a v-else v-ripple v-bind="props.action" >
                     <span :class="item.icon" />
                     <span>{{ item.label }}</span>
                     <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down" />
@@ -34,7 +27,7 @@
             </template>
             <template #end>
                 <div class="flex items-center gap-2">
-                    <span class="font-semibold">¡Hola!, {{ user?.name }}</span>
+                    <span class="font-normal">{{ user?.name }}</span>
                     <div class="card flex justify-center cursor-pointer">
                         <Avatar image="/avatar.png" shape="circle" @click="toggle" aria-haspopup="true"
                             aria-controls="overlay_menu" />
@@ -69,7 +62,7 @@
             </template>
         </Menubar>
     </header>
-    <main class="grow flex px-16 pt-24">
+    <main class="grow flex px-8 pt-20">
         <router-view />
         <Toast position="top-center" />
     </main>
@@ -144,7 +137,7 @@ const toggle = (event) => menu.value.toggle(event);
 
 const items = ref([
     {
-        label: 'Operaciones diarias',
+        label: 'Operaciones',
         name: 'transactions',
         icon: 'pi pi-money-bill',
     },
@@ -161,7 +154,7 @@ const items = ref([
     },
     {
         label:'Mantenimientos',
-        icon: 'pi pi-spin pi-cog',
+        icon: 'pi pi-cog',
         items: [
             {
                 label: 'Cuentas',

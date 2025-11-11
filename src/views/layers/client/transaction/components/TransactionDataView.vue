@@ -1,5 +1,5 @@
 <template>
-    <DataView class="w-full" :value="transactionListFilter" paginator :rows="4">
+    <DataView class="w-full" :value="transactionListFilter">
         <template #empty>
             <ProgressSpinner v-if="loadingTransaction" class="w-full" strokeWidth="5"/>
             <div v-else class="flex flex-col items-center justify-center gap-1">

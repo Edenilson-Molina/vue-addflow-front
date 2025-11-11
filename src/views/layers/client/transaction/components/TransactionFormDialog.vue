@@ -1,5 +1,5 @@
 <template>
-    <Dialog v-model:visible="visible" modal :style="{ width: '30rem' }">
+    <Dialog v-model:visible="visible" modal :style="{ width: '30rem' }" class="border-none" pt:mask:class="backdrop-blur-sm">
         <template #header>
             <div class="inline-flex items-center justify-between gap-2 w-full mr-2">
                 <div class="flex items-center gap-2">
@@ -7,9 +7,9 @@
                     <span class="font-bold whitespace-nowrap">Registrar operación</span>
                 </div>
                 <div class="flex flex-col items-center">
-                    <ToggleButton v-model="form.estado" class="w-32 text-sm" onLabel="Aprobada" offLabel="Pendiente"
-                        onIcon="pi pi-check" offIcon="pi pi-times" />
-                </div>
+                    <ToggleButton v-model="form.estado" class="w-32 text-sm rounded-full" pt:root:class="before:rounded-full" onLabel="Aprobada" offLabel="Pendiente"
+                      onIcon="pi pi-check" offIcon="pi pi-times" />
+                  </div>
             </div>
         </template>
         <div class="flex justify-between items-center mb-4">
@@ -43,7 +43,7 @@
             </div>
             <div class="flex flex-col gap-1 mb-2 w-full">
                 <label class="font-semibold w-full text-center">Cuenta</label>
-                <Select v-model="form.cuenta_id" :options="accounts" :loading="loadingAccount" class="flex-auto" 
+                <Select v-model="form.cuenta_id" :options="accounts" :loading="loadingAccount" class="flex-auto"
                     :placeholder="'Cuenta asociada'" :errors="v$.cuenta_id.$errors" />
             </div>
         </div>

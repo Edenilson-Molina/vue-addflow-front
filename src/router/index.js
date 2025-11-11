@@ -3,7 +3,7 @@ import systemRoutes from './system-routes';
 import accountRoutes from './account-routes';
 import categoryRoutes from './category-routes';
 import transactionRoutes from './transaction-routes';
-import flowMoney from './flow-money';
+import flowMoneyRoutes from './flow-money-routes';
 import { useAuthStore } from '@/stores/auth.store';
 import { storeToRefs } from 'pinia';
 
@@ -12,7 +12,7 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    meta:{
+    meta: {
       title: 'Inicio de sesión',
     },
     component: () => import('../views/auth/LoginView.vue'),
@@ -26,7 +26,7 @@ const routes = [
       ...accountRoutes,
       ...categoryRoutes,
       ...transactionRoutes,
-      ...flowMoney
+      ...flowMoneyRoutes
     ]
   },
   {
@@ -69,16 +69,16 @@ router.beforeEach(async(to, from, next) => {
       if(!authorized){
         next({ name: 'forbidden' });
         return;
-      } else {  
+      } else {
         next();
       }
     }
-  }else{ 
+  }else{
     if(token?.value && to.name === 'login'){
       next({ name: 'dashboard' });
       return;
     }
-    next(); 
+    next();
   }
 });
 

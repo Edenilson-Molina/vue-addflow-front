@@ -1,26 +1,25 @@
 <template>
-    <Fieldset class="shadow animate-flip animate-once animate-duration-75" >
-        <template #legend>
-            <div class="flex items-center gap-2">
-                <i class="pi pi-arrow-up text-green-500"></i>
-                <span class="text-green-500 font-semibold text-lg">Ingresos</span>
-            </div>
-        </template>
+    <article class="animate-flip animate-once animate-duration-75 rounded-full">
+        <div class="flex items-center gap-2">
+            <i class="pi pi-thumbs-up text-green-500"></i>
+            <span class="text-green-500 font-semibold text-lg">Ingresos</span>
+
+        </div>
         <p class="m-0 text-center">
-            <span class="text-green-500 font-semibold text-lg">${{ income }}</span>
+            <span class="text-green-500 text-lg">${{ income }}</span>
         </p>
-    </Fieldset>
-    <Fieldset class="shadow animate-flip animate-once animate-duration-75">
-        <template #legend>
+    </article>
+    <article class="animate-flip animate-once animate-duration-75 rounded-full">
+        <div>
             <div class="flex items-center gap-2">
-                <i class="pi pi-arrow-down text-red-500"></i>
+                <i class="pi pi-thumbs-down text-red-500"></i>
                 <span class="text-red-500 font-semibold text-lg">Egresos</span>
             </div>
-        </template>
+        </div>
         <p class="m-0 text-center">
-            <span class="text-red-500 font-semibold text-lg">${{ expense }}</span>
+            <span class="text-red-500 text-lg">${{ expense }}</span>
         </p>
-    </Fieldset>
+    </article>
 </template>
 
 <script setup>

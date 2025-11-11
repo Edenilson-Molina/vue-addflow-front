@@ -1,24 +1,24 @@
 <template>
-    <Toolbar class="mb-6">
-        <template #start>
-            <Button label="Nuevo" icon="pi pi-plus" class="mr-2" @click="toggleNewTransaction" />
-        </template>
-        <template #center>
-            <div class="flex justify-start">
-                <IconField class="w-full">
-                    <InputIcon>
-                        <i class="pi pi-search" />
-                    </InputIcon>
-                    <InputText class="w-full" v-model="filterTransaction" placeholder="Búsqueda" />
-                </IconField>
-            </div>
-        </template>
-        <template #end>
-            <div class="card flex justify-center">
-                <SelectButton v-model="typeTransaction" :options="optionsTypeTransaction" />
-            </div>
-        </template>
-    </Toolbar>
+    <article class="flex flex-col gap-4 md:flex-row my-8">
+      <div class="w-full">
+        <div class="flex justify-start">
+          <IconField class="w-full">
+            <InputIcon>
+              <i class="pi pi-search" />
+            </InputIcon>
+            <InputText class="w-full" v-model="filterTransaction" placeholder="Búsqueda" />
+          </IconField>
+        </div>
+      </div>
+      <div class="flex justify-start w-full">
+        <div class="card flex justify-center">
+          <SelectButton v-model="typeTransaction" :options="optionsTypeTransaction" />
+        </div>
+      </div>
+      <div>
+          <Button label="Nuevo" icon="pi pi-plus" class="mr-2" @click="toggleNewTransaction" />
+      </div>
+    </article>
 </template>
 
 <script setup>

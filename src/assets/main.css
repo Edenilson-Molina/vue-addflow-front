@@ -16,7 +16,6 @@
   font-weight: normal;
   display: flex;
   flex-direction: column;
-  @apply font-normal;
 }
 
 @layer base {
@@ -25,7 +24,7 @@
     font-family: "Parkinsans";
     src: url("@/assets/fonts/OTF/Parkinsans-Light.ttf") format("opentype");
     font-style: normal;
-    font-weight: 300;
+    font-weight: 400;
     font-display: swap;
   }
   
@@ -33,7 +32,7 @@
     font-family: "Parkinsans";
     src: url("@/assets/fonts/OTF/Parkinsans-Regular.ttf") format("opentype");
     font-style: normal;
-    font-weight: 400;
+    font-weight: 500;
     font-display: swap;
   }
   
@@ -41,14 +40,15 @@
     font-family: "Parkinsans";
     src: url("@/assets/fonts/OTF/Parkinsans-Medium.ttf") format("opentype");
     font-style: normal;
-    font-weight: 500;
+    font-weight: 700;
     font-display: swap;
+  }
+
+  * {
+    @apply font-sans;
   }
 }
 
-* {
-  @apply font-sans;
-}
 
 
 

@@ -5,18 +5,32 @@
                 <h1 class="text-3xl font-bold">Operaciones</h1>
                 <p class="text-gray-500">LLeva un seguimiento y registra las operaciones del día</p>
             </article>
-            <article class="flex gap-2">
-                <TransactionPanel />
+            <article class="flex gap-8">
+              <TransactionPanel />
             </article>
         </header>
         <section class="flex flex-col gap-1 mt-2">
-            <TransactionToolbar v-model:filterTransaction="filterTransaction" v-model:typeTransaction="typeTransaction"
-                :optionsTypeTransaction="optionsTypeTransaction" @toggleNewTransaction="toggleNewTransaction" />
-            <TransactionFormDialog v-model:visible="visible" v-model:form="form" :v$="v$" :btnEdit="btnEdit" :accounts="accounts"
-                :loadingAccount="loadingAccount" :categoriesFilter="categoriesFilter" :loadingCategories="loadingCategories"
-                @handleSaveTransaction="handleSaveTransaction" @handleEditTransaction="handleEditTransaction" />
-            <TransactionDataView :transactionListFilter="transactionListFilter" :loadingTransaction="loadingTransaction"
-                @showTransaction="showTransaction" />
+          <TransactionToolbar
+            v-model:filterTransaction="filterTransaction"
+            v-model:typeTransaction="typeTransaction"
+            :optionsTypeTransaction="optionsTypeTransaction"
+            @toggleNewTransaction="toggleNewTransaction" />
+
+          <TransactionFormDialog
+            v-model:visible="visible"
+            v-model:form="form" :v$="v$"
+            :btnEdit="btnEdit"
+            :accounts="accounts"
+            :loadingAccount="loadingAccount"
+            :categoriesFilter="categoriesFilter"
+            :loadingCategories="loadingCategories"
+            @handleSaveTransaction="handleSaveTransaction"
+            @handleEditTransaction="handleEditTransaction" />
+
+          <TransactionDataView
+            :transactionListFilter="transactionListFilter"
+            :loadingTransaction="loadingTransaction"
+            @showTransaction="showTransaction" />
         </section>
     </section>
 </template>
@@ -113,7 +127,9 @@ watch(typeTransaction, (value) => {
 });
 
 watch(() => form.value.es_entrada, () => {
-    categoriesFilter.value = categories.value.filter(categorie => categorie.es_entrada === form.value.es_entrada && categorie.estado === true);
+    categoriesFilter.value = categories.value.filter(
+      (categorie) =>
+        categorie.es_entrada === form.value.es_entrada && categorie.estado === true);
 });
 
 // Functions
@@ -138,7 +154,7 @@ const handleSaveTransaction = async() => {
     v$.value.$touch();
     if (v$.value.$invalid) return;
     visible.value = false;
-    await saveTransaction(form.value);  
+    await saveTransaction(form.value);
 };
 
 const showTransaction = (transaction) => {
