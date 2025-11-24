@@ -1,85 +1,94 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import systemRoutes from './system-routes';
-import accountRoutes from './account-routes';
-import categoryRoutes from './category-routes';
-import transactionRoutes from './transaction-routes';
-import flowMoneyRoutes from './flow-money-routes';
-import { useAuthStore } from '@/stores/auth.store';
 import { storeToRefs } from 'pinia';
+import { createRouter, createWebHistory } from 'vue-router';
+
+import { useSessionStore } from '@/stores/index.store';
+
+import authenticationRoutes from '@/views/security/routes/authentication.routes';
 
 // Define routes
 const routes = [
-  {
-    path: '/login',
-    name: 'login',
-    meta: {
-      title: 'Inicio de sesión',
+    ...authenticationRoutes,
+    {
+        path: '/',
+        component: () => import('@/views/layers/client/LayoutClient.vue'),
+        children: [
+            {
+                path: '',
+                name: 'home',
+                meta: {
+                    title: 'Inicio',
+                    requiresAuth: true,
+                },
+                component: () => import('@/views/layers/client/HomeView.vue'),
+            },
+        ]
     },
-    component: () => import('../views/auth/LoginView.vue'),
-  },
-  {
-    path:'/',
-    name:'layout',
-    component: () => import('../views/layouts/DefaultLayout.vue'),
-    children:[
-      ...systemRoutes,
-      ...accountRoutes,
-      ...categoryRoutes,
-      ...transactionRoutes,
-      ...flowMoneyRoutes
-    ]
-  },
-  {
-    path: '/forbidden',
-    name: 'forbidden',
-    meta:{
-      title: 'Acceso denegado',
+    {
+        path: '/admin',
+        component: () => import('@/views/layers/admin/LayoutAdmin.vue'),
+        children: [
+            {
+                path: '',
+                name: 'dashboard',
+                meta: {
+                    title: 'Panel de control',
+                    requiresAuth: true,
+                },
+                component: () => import('@/views/layers/admin/DashboardView.vue'),
+            },
+        ]
     },
-    component: () => import('../views/exceptions/ForbiddenView.vue'),
-  }
+    {
+        path: '/forbidden',
+        name: 'forbidden',
+        meta: {
+            title: 'Acceso denegado',
+        },
+        component: () => import('../views/exceptions/ForbiddenView.vue'),
+    }
 ];
 
 // Create router instance
 const router = createRouter({
-  history: createWebHistory(),
-  routes
+    history: createWebHistory(),
+    routes
 });
 
-router.beforeEach(async(to, from, next) => {
-  document.title = to.meta?.title || 'Vue 3 Admin';
+router.beforeEach(async (to, from, next) => {
+    document.title = to.meta?.title || 'AddFlow';
 
-  const routeList = router.getRoutes();
-  const routeExists = routeList.find(route => route.name === to.name);
-  if (!routeExists) {
-    next({ name: 'forbidden' });
-    return;
-  }
-
-  const authStore = useAuthStore();
-  const { token } = storeToRefs(authStore);
-
-  if(to.meta?.requiresAuth){
-    // Check if token exists
-    if(!token.value){
-      next({ name: 'login', replace: true });
-      return;
-    } else {
-      // Check if user is authorized
-      const authorized = true; // (Pending to implement)
-      if(!authorized){
+    const routeList = router.getRoutes();
+    const routeExists = routeList.find(route => route.name === to.name);
+    if (!routeExists) {
         next({ name: 'forbidden' });
         return;
-      } else {
+    }
+
+    const authStore = useSessionStore();
+    const { token } = storeToRefs(authStore);
+
+    if (to.meta?.requiresAuth) {
+        // Check if token exists
+        if (!token.value) {
+            next({ name: 'login', replace: true });
+            return;
+        } else {
+            // Check if user is authorized
+            const authorized = true; // (Pending to implement)
+            if (!authorized) {
+                next({ name: 'forbidden' });
+                return;
+            } else {
+                next();
+            }
+        }
+    } else {
+        if (token?.value && to.name === 'login') {
+            next({ name: 'dashboard' });
+            return;
+        }
         next();
-      }
     }
-  }else{
-    if(token?.value && to.name === 'login'){
-      next({ name: 'dashboard' });
-      return;
-    }
-    next();
-  }
 });
 
 export default router;

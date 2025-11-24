@@ -1,0 +1,25 @@
+<template>
+    <header class="fixed top-0 left-0 w-full z-10">
+       
+    </header>
+    <main class="grow flex px-8 pt-20">
+        <router-view />
+    </main>
+    <footer class="text-white p-4 w-full">
+        <div class="container mx-auto text-center">
+            © 2025 Flujo de Caja. Todos los derechos reservados.
+        </div>
+    </footer>
+</template>
+
+<script setup>
+import { onMounted, ref } from "vue";
+import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
+
+const $router = useRouter();
+
+onMounted(async () => {
+   
+});
+</script>
