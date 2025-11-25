@@ -8,8 +8,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Button: typeof import('primevue/button')['default']
+    Checkbox: typeof import('primevue/checkbox')['default']
     DatePickerComponent: typeof import('./components/forms/DatePickerComponent.vue')['default']
-    Fieldset: typeof import('primevue/fieldset')['default']
     IconCommunity: typeof import('./components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./components/icons/IconDocumentation.vue')['default']
     IconEcosystem: typeof import('./components/icons/IconEcosystem.vue')['default']
@@ -18,6 +18,7 @@ declare module 'vue' {
     InputNumberComponent: typeof import('./components/forms/InputNumberComponent.vue')['default']
     InputText: typeof import('primevue/inputtext')['default']
     InputTextComponent: typeof import('./components/forms/InputTextComponent.vue')['default']
+    Message: typeof import('primevue/message')['default']
     Password: typeof import('primevue/password')['default']
     PasswordComponent: typeof import('./components/forms/PasswordComponent.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
