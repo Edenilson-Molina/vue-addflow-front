@@ -13,10 +13,7 @@ function mapUser(dto) {
 
 export async function login(credentials) {
   const { data } = await httpClient.post('/auth/login', credentials)
-  return {
-    token: data.token,
-    user: mapUser(data.user)
-  }
+  return data
 }
 
 export async function refreshToken() {

@@ -65,11 +65,11 @@ router.beforeEach(async (to, from, next) => {
     }
 
     const authStore = useSessionStore();
-    const { token } = storeToRefs(authStore);
+    const { accessToken } = storeToRefs(authStore);
 
     if (to.meta?.requiresAuth) {
         // Check if token exists
-        if (!token.value) {
+        if (!accessToken.value) {
             next({ name: 'login', replace: true });
             return;
         } else {
@@ -83,7 +83,7 @@ router.beforeEach(async (to, from, next) => {
             }
         }
     } else {
-        if (token?.value && to.name === 'login') {
+        if (accessToken?.value && to.name === 'login') {
             next({ name: 'dashboard' });
             return;
         }

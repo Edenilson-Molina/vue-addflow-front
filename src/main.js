@@ -9,7 +9,8 @@ import App from './App.vue'
 import router from './router'
 import { setupPrimeVue } from '@/plugins/primevue'
 import { setupNotivue } from '@/plugins/notivue'
-import { setupApi } from '@/plugins/api'
+import { VueQueryPlugin } from '@tanstack/vue-query'
+import { queryClient } from '@/plugins/query'
 
 const pinia = createPinia().use(piniaPluginPersistedstate)
 
@@ -17,9 +18,9 @@ const app = createApp(App)
     .use(pinia)
     .use(router)
     .use(VueSpinnersPlugin)
+    .use(VueQueryPlugin, { queryClient })
 
 setupPrimeVue(app)
 setupNotivue(app)
-setupApi(app)
 
 app.mount('#app')
