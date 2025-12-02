@@ -21,9 +21,8 @@
                     <p class="text-xs text-gray-500 mt-1">Sistema de Flujo de Caja</p>
                 </div>
             </div>
-            <ul class="flex grow flex-col gap-4 py-2 overflow-y-auto">
-                <template v-for="m in menu">
-                    <li class="flex flex-col gap-1 px-2">
+            <transition-group name="list" tag="ul" class="flex grow flex-col gap-4 py-2 overflow-y-auto">
+                <li v-for="m in menu" :key="m.title" class="flex flex-col gap-1 px-2">
                         <h3 class="px-3 text-xs text-gray-500 font-semibold uppercase tracking-wider">{{ m.title }}</h3>
                         <template v-for="value in m.items">
                             <router-link
@@ -57,7 +56,7 @@
                                         class="flex flex-col gap-1 mt-1 border-l-2 border-gray-200 overflow-hidden"
                                         :class="isActiveMenu(value) ? 'border-l-blue-700': ''"
                                     >
-                                        <li v-for="child in value.children" :key="child.name" class="relative pl-6">
+                                        <li v-for="child in value.children" :key="child.routeName || child.name" class="relative pl-6">
                                             <router-link
                                                 :to="{ name: child.routeName }"
                                                 class="flex items-center gap-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-300 px-3 py-2"
@@ -71,9 +70,8 @@
                                 </transition>
                             </div>
                         </template>
-                    </li>
-                </template> 
-            </ul>
+                </li>
+            </transition-group>
         </aside>
     </transition>
     <div class="fixed inset-0 bg-black/20 z-10" v-if="flagSidebar" @click="toggleSidebar">
@@ -136,11 +134,11 @@ onMounted(() => {
 /* Animación usando clases de Vue Transition */
 .submenu-enter-active,
 .submenu-leave-active {
-    transition: transform 0.25s ease, opacity 0.25s ease;
+    transition: transform 0.5s ease, opacity 0.5s ease;
 }
 .submenu-enter-from,
 .submenu-leave-to {
-    transform: translateY(-20px);
+    transform: translateY(-5px);
     opacity: 0;
 }
 
@@ -148,7 +146,7 @@ onMounted(() => {
 .submenu-leave-from {
     transform: translateY(2px);
     opacity: 1;
-    animation-duration: 0.25s;
+    animation-duration: 0.5s;
 }
 
 /* Animación para el sidebar */
@@ -182,5 +180,23 @@ onMounted(() => {
     height: 8px;
     background-color: #2563eb; /* blue-600 */
     border-radius: 50%;
+}
+
+.list-move, /* apply transition to moving elements */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.list-leave-active {
+  position: flex;
 }
 </style>
