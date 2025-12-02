@@ -25,6 +25,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SelectComponent: typeof import('./components/forms/SelectComponent.vue')['default']
+    Sidebar: typeof import('./components/layout/Sidebar.vue')['default']
     TextareaComponent: typeof import('./components/forms/TextareaComponent.vue')['default']
     Toast: typeof import('primevue/toast')['default']
   }

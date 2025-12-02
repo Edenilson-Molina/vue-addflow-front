@@ -1,6 +1,6 @@
 <template>
     <header class="fixed top-0 left-0 w-full z-10">
-       
+       <sidebar />
     </header>
     <main class="grow flex px-8 pt-20">
         <router-view />
@@ -13,13 +13,5 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
 
-const $router = useRouter();
-
-onMounted(async () => {
-   
-});
 </script>

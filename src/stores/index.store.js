@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 export const useSessionStore = defineStore('app', () => {
     // State
     const loading = ref(false);
+    const flagSidebar = ref(false);
     const accessToken = ref(null);
     const user = ref({
         id: null,
@@ -27,11 +28,17 @@ export const useSessionStore = defineStore('app', () => {
         };
     }
 
+    function setFlagSidebar() {
+        flagSidebar.value = !flagSidebar.value;
+    }
+
     return {
         loading,
+        flagSidebar,
         accessToken,
         user,
-        setAuthData
+        setAuthData,
+        setFlagSidebar
     };
 },
 {
