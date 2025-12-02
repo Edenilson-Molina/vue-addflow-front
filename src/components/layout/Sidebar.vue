@@ -2,7 +2,7 @@
     <transition name="sidebar-fade">
         <aside
             v-show="flagSidebar"
-            class="flex flex-col fixed top-0 left-0 w-64 h-full bg-white shadow-md z-20"
+            class="flex flex-col fixed top-0 left-0 w-72 h-full bg-white shadow-md z-20"
         >
             <div class="flex relative flex-col items-center gap-1 justify-center py-8 border-b border-gray-100">
                 <button @click="toggleSidebar" class="absolute top-0 right-0 p-3">
@@ -39,8 +39,8 @@
                                 <button
                                     type="button"
                                     @click="toggleMenu(value)"
-                                    class="w-full flex items-center gap-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-300 px-3 py-2"
-                                    :class="isActiveMenu(value) ? 'text-blue-700 font-semibold' : ''"
+                                    class="w-full flex items-center gap-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-300 px-3 py-2"
+                                    :class="isActiveMenu(value) ? 'text-blue-700 font-semibold' : 'text-gray-700'"
                                 >
                                     <i class="material-icons-round !text-base">{{ value.icon }}</i>
                                     <span class="text-sm">{{ value.name }}</span>
@@ -54,14 +54,14 @@
                                 <transition name="submenu">
                                     <ul
                                         v-show="isMenuExpanded(value)"
-                                        class="flex flex-col gap-1 mt-1 border-l-2 border-gray-200 overflow-hidden origin-top"
+                                        class="flex flex-col gap-1 mt-1 border-l-2 border-gray-200 overflow-hidden"
                                         :class="isActiveMenu(value) ? 'border-l-blue-700': ''"
                                     >
                                         <li v-for="child in value.children" :key="child.name" class="relative pl-6">
                                             <router-link
                                                 :to="{ name: child.routeName }"
-                                                class="flex items-center gap-2 text-gray-600 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-300 px-3 py-2"
-                                                :class="isActiveRoute(child.routeName) ? 'activate bg-blue-100 text-blue-700 font-semibold' : ''"
+                                                class="flex items-center gap-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-300 px-3 py-2"
+                                                :class="isActiveRoute(child.routeName) ? 'activate bg-blue-100 text-blue-600 font-semibold' : 'text-gray-600'"
                                             >
                                                 <i class="material-icons-round !text-base">{{ child.icon }}</i>
                                                 <span class="text-sm">{{ child.name }}</span>
@@ -140,13 +140,15 @@ onMounted(() => {
 }
 .submenu-enter-from,
 .submenu-leave-to {
-    transform: scaleY(0);
+    transform: translateY(-20px);
     opacity: 0;
 }
+
 .submenu-enter-to,
 .submenu-leave-from {
-    transform: scaleY(1);
+    transform: translateY(2px);
     opacity: 1;
+    animation-duration: 0.25s;
 }
 
 /* Animación para el sidebar */
@@ -161,6 +163,12 @@ onMounted(() => {
 .sidebar-fade-enter-from,
 .sidebar-fade-leave-to {
     transform: translateX(-100%) ;
+}
+
+.sidebar-fade-enter-to,
+.sidebar-fade-leave-from {
+    transform: translateX(2px);
+    animation-duration: 0.3s;
 }
 
 /* point blue in routelink selection */
