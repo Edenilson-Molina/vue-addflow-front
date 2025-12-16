@@ -5,7 +5,7 @@ export const useSessionStore = defineStore('app', () => {
     // State
     const loading = ref(false);
     const flagSidebar = ref(false);
-    const accessToken = ref(null);
+    const accessToken = ref('');
     const user = ref({
         id: null,
         name: '',
@@ -13,6 +13,9 @@ export const useSessionStore = defineStore('app', () => {
         roles: [],
         permissions: []
     });
+
+    // Getters
+    const isAuthenticated = computed(() => !tokenIsExpired());
 
     // Actions
     function setAuthData(payload) {
@@ -32,11 +35,24 @@ export const useSessionStore = defineStore('app', () => {
         flagSidebar.value = !flagSidebar.value;
     }
 
+    function tokenIsExpired() {
+        try {
+            if (!accessToken.value) return true;
+            const tokenDecode = jwtDecode(accessToken.value);
+            const expiry = tokenDecode.exp * 1000; 
+            const now = Date.now();
+            return now >= expiry;
+        } catch (error) {
+            return true;
+        }
+    }
+
     return {
         loading,
         flagSidebar,
         accessToken,
         user,
+        isAuthenticated,
         setAuthData,
         setFlagSidebar
     };

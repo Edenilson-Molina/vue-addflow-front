@@ -1,9 +1,9 @@
-import { storeToRefs } from 'pinia';
 import { createRouter, createWebHistory } from 'vue-router';
 
 import { useSessionStore } from '@/stores/index.store';
 
 import authenticationRoutes from '@/views/security/routes/authentication.routes';
+import maintenanceRoutes from '@/views/layers/admin/routes/maintenance.routes';
 
 // Define routes
 const routes = [
@@ -36,6 +36,7 @@ const routes = [
                 },
                 component: () => import('@/views/layers/admin/DashboardView.vue'),
             },
+            ...maintenanceRoutes
         ]
     },
     {
@@ -65,29 +66,36 @@ router.beforeEach(async (to, from, next) => {
     }
 
     const authStore = useSessionStore();
-    const { accessToken } = storeToRefs(authStore);
+    const { isAuthenticated } = authStore;
 
     if (to.meta?.requiresAuth) {
-        // Check if token exists
-        if (!accessToken.value) {
+        if (!isAuthenticated) {
             next({ name: 'login', replace: true });
             return;
         } else {
-            // Check if user is authorized
-            const authorized = true; // (Pending to implement)
+            const authorized = true;
             if (!authorized) {
                 next({ name: 'forbidden' });
                 return;
-            } else {
-                next();
             }
+            next();
         }
     } else {
-        if (accessToken?.value && to.name === 'login') {
-            next({ name: 'dashboard' });
+        if (isAuthenticated && to.name === 'login') {
+            next({ name: 'home' });
             return;
         }
         next();
+    }
+});
+
+router.afterEach(() => {
+    const authStore = useSessionStore();
+    const { flagSidebar } = storeToRefs(authStore);
+    if (flagSidebar.value) {
+        nextTick(() => {
+            authStore.setFlagSidebar();
+        });
     }
 });
 

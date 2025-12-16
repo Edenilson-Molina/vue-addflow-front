@@ -21,55 +21,55 @@
                     <p class="text-xs text-gray-500 mt-1">Sistema de Flujo de Caja</p>
                 </div>
             </div>
-            <transition-group name="list" tag="ul" class="flex grow flex-col gap-4 py-2 overflow-y-auto">
+            <transition-group name="list" tag="ul" class="flex grow flex-col gap-2 py-2 overflow-y-auto scroll-custom">
                 <li v-for="m in menu" :key="m.title" class="flex flex-col gap-1 px-2">
-                        <h3 class="px-3 text-xs text-gray-500 font-semibold uppercase tracking-wider">{{ m.title }}</h3>
-                        <template v-for="value in m.items">
-                            <router-link
-                                v-if="!value.children"
-                                :to="{ name: value.routeName }"
-                                class="flex items-center gap-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 px-3 py-2"
-                                :class="isActiveRoute(value.routeName) ? 'bg-blue-100 text-blue-700 font-semibold' : ''"
+                    <h3 class="px-3 text-xs text-gray-500 font-semibold uppercase tracking-wider">{{ m.title }}</h3>
+                    <template v-for="value in m.items">
+                        <router-link
+                            v-if="!value.children"
+                            :to="{ name: value.routeName }"
+                            class="flex items-center gap-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 px-3 py-2"
+                            :class="isActiveRoute(value.routeName) ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-700'"
+                        >
+                            <i class="material-icons-round !text-sm">{{ value.icon }}</i>
+                            <span class="text-sm">{{ value.name }}</span>
+                        </router-link>
+                        <div v-else>
+                            <button
+                                type="button"
+                                @click="toggleMenu(value)"
+                                class="w-full flex items-center gap-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-300 px-3 py-2"
+                                :class="isActiveMenu(value) ? 'text-blue-700 font-semibold' : 'text-gray-700'"
                             >
-                                <i class="material-icons-round !text-base">{{ value.icon }}</i>
+                                <i class="material-icons-round !text-sm">{{ value.icon }}</i>
                                 <span class="text-sm">{{ value.name }}</span>
-                            </router-link>
-                            <div v-else>
-                                <button
-                                    type="button"
-                                    @click="toggleMenu(value)"
-                                    class="w-full flex items-center gap-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-300 px-3 py-2"
-                                    :class="isActiveMenu(value) ? 'text-blue-700 font-semibold' : 'text-gray-700'"
+                                <i
+                                    class="material-icons-round ml-auto transition-transform duration-300"
+                                    :class="isMenuExpanded(value) ? 'rotate-180' : ''"
                                 >
-                                    <i class="material-icons-round !text-base">{{ value.icon }}</i>
-                                    <span class="text-sm">{{ value.name }}</span>
-                                    <i
-                                        class="material-icons-round ml-auto transition-transform duration-300"
-                                        :class="isMenuExpanded(value) ? 'rotate-180' : ''"
-                                    >
-                                        expand_more
-                                    </i>
-                                </button>
-                                <transition name="submenu">
-                                    <ul
-                                        v-show="isMenuExpanded(value)"
-                                        class="flex flex-col gap-1 mt-1 border-l-2 border-gray-200 overflow-hidden"
-                                        :class="isActiveMenu(value) ? 'border-l-blue-700': ''"
-                                    >
-                                        <li v-for="child in value.children" :key="child.routeName || child.name" class="relative pl-6">
-                                            <router-link
-                                                :to="{ name: child.routeName }"
-                                                class="flex items-center gap-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-300 px-3 py-2"
-                                                :class="isActiveRoute(child.routeName) ? 'activate bg-blue-100 text-blue-600 font-semibold' : 'text-gray-600'"
-                                            >
-                                                <i class="material-icons-round !text-base">{{ child.icon }}</i>
-                                                <span class="text-sm">{{ child.name }}</span>
-                                            </router-link>
-                                        </li>
-                                    </ul>
-                                </transition>
-                            </div>
-                        </template>
+                                    expand_more
+                                </i>
+                            </button>
+                            <transition name="submenu">
+                                <ul
+                                    v-show="isMenuExpanded(value)"
+                                    class="flex flex-col gap-1 mt-1 border-l-2 border-gray-200 overflow-hidden"
+                                    :class="isActiveMenu(value) ? 'border-l-blue-700': ''"
+                                >
+                                    <li v-for="child in value.children" :key="child.routeName || child.name" class="relative pl-6">
+                                        <router-link
+                                            :to="{ name: child.routeName }"
+                                            class="flex items-center gap-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-300 px-3 py-2"
+                                            :class="isActiveRoute(child.routeName) ? 'activate bg-blue-100 text-blue-600 font-semibold' : 'text-gray-600'"
+                                        >
+                                            <i class="material-icons-round !text-sm">{{ child.icon }}</i>
+                                            <span class="text-sm">{{ child.name }}</span>
+                                        </router-link>
+                                    </li>
+                                </ul>
+                            </transition>
+                        </div>
+                    </template>
                 </li>
             </transition-group>
         </aside>
@@ -79,7 +79,7 @@
 </template>
 <script setup>
 import { useSessionStore } from '@/stores/index.store'
-import menu from './index.js'
+import menu from './dataSidebar.js'
 
 const sessionStore = useSessionStore()
 const { flagSidebar } = storeToRefs(sessionStore)
@@ -132,10 +132,14 @@ onMounted(() => {
 </script>
 <style scoped>
 /* Animación usando clases de Vue Transition */
-.submenu-enter-active,
-.submenu-leave-active {
-    transition: transform 0.5s ease, opacity 0.5s ease;
+.submenu-enter-active {
+    transition: transform 0.5s ease, opacity 0.25s ease;
 }
+
+.submenu-leave-active {
+    transition: transform 0.25s cubic-bezier(1, 0, 0, 1), opacity 0.25s ease-in-out;
+}
+
 .submenu-enter-from,
 .submenu-leave-to {
     transform: translateY(-5px);
@@ -144,9 +148,8 @@ onMounted(() => {
 
 .submenu-enter-to,
 .submenu-leave-from {
-    transform: translateY(2px);
+    transform: translateY(0);
     opacity: 1;
-    animation-duration: 0.5s;
 }
 
 /* Animación para el sidebar */
@@ -182,21 +185,47 @@ onMounted(() => {
     border-radius: 50%;
 }
 
-.list-move, /* apply transition to moving elements */
+/* Animacion para las secciones */
+.list-move,
 .list-enter-active,
 .list-leave-active {
-  transition: all 0.5s ease;
+    transition: transform 0.25s ease, opacity 0.25s ease, margin 0.25s ease, padding 0.25s ease;
 }
 
 .list-enter-from,
 .list-leave-to {
-  opacity: 0;
-  transform: translateY(30px);
+    opacity: 0;
+    transform: translateY(8px);
+}
+
+.list-enter-to,
+.list-leave-from {
+    opacity: 1;
+    transform: translateY(10px);
 }
 
 /* ensure leaving items are taken out of layout flow so that moving
    animations can be calculated correctly. */
 .list-leave-active {
-  position: flex;
+    position: relative;
+    width: 100%;
+}
+
+/* Custom scrollbar styles */
+.scroll-custom::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scroll-custom::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.scroll-custom::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.scroll-custom::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.4);
 }
 </style>

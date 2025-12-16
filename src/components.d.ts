@@ -20,6 +20,7 @@ declare module 'vue' {
     InputNumberComponent: typeof import('./components/forms/InputNumberComponent.vue')['default']
     InputText: typeof import('primevue/inputtext')['default']
     InputTextComponent: typeof import('./components/forms/InputTextComponent.vue')['default']
+    Navbar: typeof import('./components/layout/Navbar.vue')['default']
     Password: typeof import('primevue/password')['default']
     PasswordComponent: typeof import('./components/forms/PasswordComponent.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -27,6 +28,5 @@ declare module 'vue' {
     SelectComponent: typeof import('./components/forms/SelectComponent.vue')['default']
     Sidebar: typeof import('./components/layout/Sidebar.vue')['default']
     TextareaComponent: typeof import('./components/forms/TextareaComponent.vue')['default']
-    Toast: typeof import('primevue/toast')['default']
   }
 }
